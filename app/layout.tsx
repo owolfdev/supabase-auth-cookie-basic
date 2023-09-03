@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SiteHeader />
           {children}

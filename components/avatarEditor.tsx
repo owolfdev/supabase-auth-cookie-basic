@@ -67,7 +67,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ yourImage }) => {
 
   return (
     <>
-      <div style={{ position: "relative", width: "300px", height: "300px" }}>
+      <div style={{ position: "relative", width: "200px", height: "200px" }}>
         <Cropper
           image={yourImage}
           crop={crop}
@@ -78,20 +78,6 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ yourImage }) => {
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
         />
-        {/* <Button
-          variant="outline"
-          style={{
-            position: "absolute",
-            bottom: "10px",
-            right: "10px",
-            zIndex: 1,
-          }}
-          onClick={() => {
-            
-          }}
-        >
-          Done
-        </Button> */}
       </div>
     </>
   );

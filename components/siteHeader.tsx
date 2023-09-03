@@ -33,7 +33,7 @@ export function SiteHeader() {
         <nav>
           <Link href={"/"} className="flex gap-2 items-center text-2xl">
             <MdSpaceDashboard />
-            <h1 className="font-bold ">Logo</h1>
+            <h1 className="font-bold ">Supabase Auth</h1>
           </Link>{" "}
         </nav>
         <div className="flex gap-4 items-center">
