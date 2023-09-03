@@ -66,7 +66,7 @@ export default function SignInPage() {
     <section className="container flex flex-col items-center justify-center gap-6 pt-12 pb-8">
       <div className="flex max-w-[980px] flex-col items-start gap-2">
         <h1 className="text-center w-full font-extrabold leading-tight tracking-tight text-5xl">
-          Sign In Page
+          Log In Page
         </h1>
       </div>
       <div className="w-full sm:w-[460px]">

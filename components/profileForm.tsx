@@ -71,9 +71,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <div className="text-sm">email@email.com</div>
-              {/* <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl> */}
+              <FormControl></FormControl>
               <FormDescription>
                 Your account is linked to this email address.
               </FormDescription>
@@ -88,7 +86,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter user name." {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -104,7 +102,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter full name." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -117,7 +115,7 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Website</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter web site." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

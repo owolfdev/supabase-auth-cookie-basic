@@ -59,7 +59,10 @@ export function LogIn({}: {}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{isSignUp ? "Please Sign Up" : "Please Sign In"}</CardTitle>
+        <CardTitle>
+          {isSignUp ? "Create an Account" : "Please Log In"}
+        </CardTitle>
+
         <CardDescription>
           {isSignUp
             ? "Create your user account."
@@ -104,7 +107,8 @@ export function LogIn({}: {}) {
             )}
           </div>
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
-            <Button type="submit">{isSignUp ? "Sign Up" : "Sign In"}</Button>
+            <Button type="submit">{isSignUp ? "Create" : "Log In"}</Button>
+
             <div>
               {isSignUp ? "Already have an account?" : "Don't have an account?"}
             </div>
@@ -116,7 +120,7 @@ export function LogIn({}: {}) {
                 setAuthError(null);
               }}
             >
-              {isSignUp ? "Sign In" : "Sign Up"}
+              {isSignUp ? "Log In" : "Sign Up"}
             </Button>
           </div>
         </form>
