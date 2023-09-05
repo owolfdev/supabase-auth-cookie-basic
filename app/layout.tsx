@@ -21,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {pathname !== "/login" && <SiteHeader />}
+          {pathname !== "/login" &&
+            pathname !== "/signup" &&
+            pathname !== "/reset-password" && <SiteHeader />}
           {children}
         </ThemeProvider>
       </body>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { MdSpaceDashboard } from "react-icons/md";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -19,12 +19,29 @@ import { Button } from "@/components/ui/button";
 import { AuthAvatar } from "@/components/authAvatar";
 
 export function SiteHeader() {
-  const router = useRouter();
-
   const { setTheme } = useTheme();
-
+  const router = useRouter();
   const handleGoToAccount = () => {
     router.push("/account");
+  };
+
+  const handleNavigation = () => {
+    window.location.href = "/login";
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/auth/sign-out", {
+        method: "POST",
+      });
+
+      if (res.status === 200) {
+        console.log("Signed out successfully");
+        handleNavigation();
+      }
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -36,6 +53,7 @@ export function SiteHeader() {
             <h1 className="font-bold ">Supabase Auth</h1>
           </Link>{" "}
         </nav>
+
         <div className="flex gap-4 items-center">
           <div id="avatar" className="flex items-center">
             <DropdownMenu>
@@ -50,7 +68,7 @@ export function SiteHeader() {
                 </DropdownMenuItem>
 
                 <DropdownMenuItem>
-                  <button>Sign Out</button>
+                  <button onClick={handleSignOut}>Log Out</button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

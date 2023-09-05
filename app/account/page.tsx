@@ -1,8 +1,22 @@
-import React from "react";
-import Link from "next/link";
 import { ProfileForm } from "@/components/profileForm";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-function Account() {
+export const dynamic = "force-dynamic";
+
+export default async function Account() {
+  const supabase = createServerComponentClient({ cookies });
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    console.log("User not retrieved, redirecting to login");
+    redirect("/login");
+  }
+
   return (
     <main className="flex flex-col gap-8 px-8 sm:px-12 pt-6 md:py-10">
       <section className="flex max-w-[980px] flex-col items-start gap-2">
@@ -14,10 +28,8 @@ function Account() {
         </p>
       </section>
       <section className="flex gap-4 w-full">
-        <ProfileForm />
+        <ProfileForm session={session} />
       </section>
     </main>
   );
 }
-
-export default Account;

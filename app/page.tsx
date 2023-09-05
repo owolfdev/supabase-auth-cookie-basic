@@ -1,4 +1,21 @@
-export default function Home() {
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const supabase = createServerComponentClient({ cookies });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("User not retrieved, redirecting to login");
+    redirect("/login");
+  }
+
   return (
     <main className="flex flex-col gap-8 px-8 sm:px-12 pt-6 md:py-10">
       <section className="flex max-w-[980px] flex-col items-start gap-2">

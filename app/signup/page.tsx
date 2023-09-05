@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogIn } from "@/components/loginComponent";
+import { SignUp } from "@/components/signupComponent";
 // import supabase from "@/lib/supabaseClient";
 // import useUser from "@/hooks/useUser";
 
@@ -63,15 +63,15 @@ export default function SignInPage() {
   // };
 
   return (
-    <section className="container flex flex-col items-center justify-center gap-6 pt-12 ">
+    <section className="container flex flex-col items-center justify-center gap-6 pt-12">
       <div className="flex max-w-[980px] flex-col items-start gap-2">
         <h1 className="text-center w-full font-extrabold leading-tight tracking-tight text-5xl">
-          Log In
+          Sign Up
         </h1>
       </div>
       <div className="w-full sm:w-[460px]">
         {/* <div>{JSON.stringify(user)}</div> */}
-        <LogIn
+        <SignUp
         // supabase={supabase}
         // signin={handleLogin}
         // signup={handleSignUp}

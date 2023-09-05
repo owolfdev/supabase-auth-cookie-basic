@@ -11,9 +11,13 @@ type Area = {
 
 interface AvatarEditorProps {
   yourImage: string; // assuming yourImage is a URL string
+  onImageCropped: (image: string | null) => void; // New prop
 }
 
-const AvatarEditor: React.FC<AvatarEditorProps> = ({ yourImage }) => {
+const AvatarEditor: React.FC<AvatarEditorProps> = ({
+  yourImage,
+  onImageCropped,
+}) => {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
@@ -22,8 +26,9 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ yourImage }) => {
     async (croppedArea: Area, croppedAreaPixels: Area) => {
       const croppedImage = await getCroppedImg(yourImage, croppedAreaPixels);
       setCroppedImage(croppedImage);
+      onImageCropped(croppedImage); // Call the callback
     },
-    [yourImage]
+    [yourImage, onImageCropped]
   );
 
   const createImage = (url: string) =>

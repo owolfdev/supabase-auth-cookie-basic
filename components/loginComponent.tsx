@@ -1,7 +1,3 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,121 +9,73 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
-// import { signIn, signUp } from "./authUtils";
+import Messages from "./messages";
+import Link from "next/link";
+
+import GoToSignupButton from "./goToSignupButton";
 
 type AuthResult = {
   success: boolean;
-  error?: string; // Indicates error can be undefined.
+  error?: string;
 };
 
-export function LogIn({}: {}) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const router = useRouter();
+const handleResetPassword = () => {
+  console.log("Reset password");
+};
 
-  const handleLogin = async () => {
-    console.log("handleSignin");
-    // const result: AuthResult = await signIn(email, password);
-    // if (!result.success) {
-    //   setAuthError(result.error ?? null); // Use null if error is undefined.
-    // } else {
-    //   router.push("/");
-    // }
-  };
-
-  const handleSignup = async () => {
-    console.log("handleSignup");
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // console.log(isSignUp);
-
-    if (isSignUp) {
-      handleSignup();
-    } else {
-      handleLogin();
-    }
-  };
-
+export function LogIn() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          {isSignUp ? "Create an Account" : "Please Log In"}
-        </CardTitle>
+        <CardTitle>Please Log In</CardTitle>
 
-        <CardDescription>
-          {isSignUp
-            ? "Create your user account."
-            : "Use your email and password."}
-        </CardDescription>
+        <CardDescription>Use your email and password.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
+        <form action="/auth/sign-in" method="post">
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 placeholder="Your email"
-                onChange={(e) => {
-                  setAuthError(null);
-                  setEmail(e.target.value);
-                }}
+                type="email"
+                required
               />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
+                name="password"
                 placeholder="Your password"
-                onChange={(e) => {
-                  setAuthError(null);
-                  setPassword(e.target.value);
-                }}
+                type="password"
+                required
               />
             </div>
-            {isSignUp && (
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  placeholder="Re-enter your password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  // Add appropriate state and handlers
-                />
-              </div>
-            )}
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
-            <Button type="submit">{isSignUp ? "Create" : "Log In"}</Button>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
+              <Button type="submit">Log In</Button>
 
-            <div>
-              {isSignUp ? "Already have an account?" : "Don't have an account?"}
+              <div className="text-sm ">Don't have an account?</div>
+              <GoToSignupButton />
             </div>
-            <Button
-              className="px-3 py-0"
-              variant="outline"
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setAuthError(null);
-              }}
+            <Link
+              href="/send-reset-password-email"
+              className="text-sm text-muted-foreground hover:cursor-pointer"
             >
-              {isSignUp ? "Log In" : "Sign Up"}
-            </Button>
+              Forgot your password?
+            </Link>
           </div>
+
+          <Messages />
         </form>
       </CardContent>
-      <CardFooter>
-        {authError && <div className="text-red-500">{authError}</div>}
-      </CardFooter>
+      {/* <CardFooter> */}
+      {/* {authError && <div className="text-red-500">{authError}</div>} */}
+      {/* </CardFooter> */}
       {/* <div className="text-gray-400 p-4">tim.coleman@hyperreal.io</div> */}
     </Card>
   );
