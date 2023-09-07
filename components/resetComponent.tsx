@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,24 +13,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Messages from "./messages";
-
-type AuthResult = {
-  success: boolean;
-  error?: string;
-};
+import { useSearchParams } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function ResetPassword() {
+  const supabase = createClientComponentClient();
+  const params = useSearchParams();
+  const code = params.get("code") || "";
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Reset Your Password</CardTitle>
-
+        {/* <div>code: {code}</div> */}
         <CardDescription>Add a new password.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action="/auth/reset-password" method="post">
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
+              <input type="hidden" name="code" value={code} />
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -44,10 +49,6 @@ export function ResetPassword() {
           <Messages />
         </form>
       </CardContent>
-      {/* <CardFooter> */}
-      {/* {authError && <div className="text-red-500">{authError}</div>} */}
-      {/* </CardFooter> */}
-      {/* <div className="text-gray-400 p-4">tim.coleman@hyperreal.io</div> */}
     </Card>
   );
 }

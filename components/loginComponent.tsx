@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,23 +12,11 @@ import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import Link from "next/link";
 
-import GoToSignupButton from "./goToSignupButton";
-
-type AuthResult = {
-  success: boolean;
-  error?: string;
-};
-
-const handleResetPassword = () => {
-  console.log("Reset password");
-};
-
 export function LogIn() {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Please Log In</CardTitle>
-
         <CardDescription>Use your email and password.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -55,12 +43,21 @@ export function LogIn() {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
               <Button type="submit">Log In</Button>
 
-              <div className="text-sm ">Don't have an account?</div>
-              <GoToSignupButton />
+              <div className="text-sm text-muted-foreground">
+                Don't have an account?
+              </div>
+              <Link
+                href="/signup"
+                className={buttonVariants({
+                  variant: "outline",
+                })}
+              >
+                Sign Up
+              </Link>
             </div>
             <Link
               href="/send-reset-password-email"
@@ -73,10 +70,6 @@ export function LogIn() {
           <Messages />
         </form>
       </CardContent>
-      {/* <CardFooter> */}
-      {/* {authError && <div className="text-red-500">{authError}</div>} */}
-      {/* </CardFooter> */}
-      {/* <div className="text-gray-400 p-4">tim.coleman@hyperreal.io</div> */}
     </Card>
   );
 }

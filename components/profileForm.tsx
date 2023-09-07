@@ -1,12 +1,9 @@
 "use client";
 import { useState, useCallback, useEffect, use } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import AvatarEditor from "./avatarEditor";
 import Avatar from "./avatar";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -35,15 +32,14 @@ const formSchema = z.object({
 });
 
 export function ProfileForm({ session }: { session: Session | null }) {
-  const [image, setImage] = useState<string | null>(null); // for the avatar image
+  // const [image, setImage] = useState<string | null>(null); // for the avatar image
   const supabase = createClientComponentClient();
   const [loading, setLoading] = useState(true); // Fixed initialization and naming
   const [fullname, setFullname] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null); // For the cropped image blob
-  const [imageDataUrl, setImageDataUrl] = useState<string | null>(null); // For the cropped image Data URL
-
+  // const [imageBlob, setImageBlob] = useState<Blob | null>(null); // For the cropped image blob
+  // const [imageDataUrl, setImageDataUrl] = useState<string | null>(null); // For the cropped image Data URL
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null); // Fixed initialization and naming
   const user = session?.user;
 
@@ -73,6 +69,7 @@ export function ProfileForm({ session }: { session: Session | null }) {
       }
 
       if (data) {
+        console.log("data:", data);
         setValue("username", data.username);
         setValue("full_name", data.full_name);
         setValue("website", data.website);
@@ -116,7 +113,7 @@ export function ProfileForm({ session }: { session: Session | null }) {
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
-      alert("Profile updated!");
+      // alert("Profile updated!");
     } catch (error) {
       alert("Error updating the data!");
     } finally {
@@ -124,73 +121,73 @@ export function ProfileForm({ session }: { session: Session | null }) {
     }
   }
 
-  async function blobUrlToBlob(blobUrl: string) {
-    const response = await fetch(blobUrl);
-    const blob = await response.blob();
-    return blob;
-  }
+  // async function blobUrlToBlob(blobUrl: string) {
+  //   const response = await fetch(blobUrl);
+  //   const blob = await response.blob();
+  //   return blob;
+  // }
 
-  const handleImageFileSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string); // assuming it's a Data URL
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageFileSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImage(reader.result as string); // assuming it's a Data URL
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
-  const onImageCropped = (imageDataUrl: string | null) => {
-    if (imageDataUrl) {
-      setImageDataUrl(imageDataUrl); // Storing the Data URL to be uploaded later
-    }
-  };
+  // const onImageCropped = (imageDataUrl: string | null) => {
+  //   if (imageDataUrl) {
+  //     setImageDataUrl(imageDataUrl); // Storing the Data URL to be uploaded later
+  //   }
+  // };
 
-  function dataURLtoBlob(dataurl: string) {
-    const arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)?.[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-  }
+  // function dataURLtoBlob(dataurl: string) {
+  //   const arr = dataurl.split(","),
+  //     mime = arr[0].match(/:(.*?);/)?.[1];
+  //   const bstr = atob(arr[1]);
+  //   let n = bstr.length;
+  //   const u8arr = new Uint8Array(n);
+  //   while (n--) {
+  //     u8arr[n] = bstr.charCodeAt(n);
+  //   }
+  //   return new Blob([u8arr], { type: mime });
+  // }
 
-  const uploadImageToSupabase = async (
-    imageBlob: Blob,
-    oldAvatarUrl: string | null
-  ) => {
-    try {
-      if (oldAvatarUrl) {
-        const { error: deleteError } = await supabase.storage
-          .from("avatars")
-          .remove([oldAvatarUrl]); // Extract the file name from the URL
-        if (deleteError) {
-          throw deleteError;
-        }
-      }
-      // Generate a unique path for storing the image
-      const fileExt = "png"; // or jpg or whatever you need
-      const filePath = `${user?.id}-${Math.random()}.${fileExt}`;
+  // const uploadImageToSupabase = async (
+  //   imageBlob: Blob,
+  //   oldAvatarUrl: string | null
+  // ) => {
+  //   try {
+  //     if (oldAvatarUrl) {
+  //       const { error: deleteError } = await supabase.storage
+  //         .from("avatars")
+  //         .remove([oldAvatarUrl]); // Extract the file name from the URL
+  //       if (deleteError) {
+  //         throw deleteError;
+  //       }
+  //     }
+  //     // Generate a unique path for storing the image
+  //     const fileExt = "png"; // or jpg or whatever you need
+  //     const filePath = `${user?.id}-${Math.random()}.${fileExt}`;
 
-      // Upload the image
-      const { error } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, imageBlob);
-      if (error) throw error;
+  //     // Upload the image
+  //     const { error } = await supabase.storage
+  //       .from("avatars")
+  //       .upload(filePath, imageBlob);
+  //     if (error) throw error;
 
-      // Generate the public URL for the new image
-      const avatarUrl = `${filePath}`;
+  //     // Generate the public URL for the new image
+  //     const avatarUrl = `${filePath}`;
 
-      return avatarUrl;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return null;
-    }
-  };
+  //     return avatarUrl;
+  //   } catch (error) {
+  //     console.error("Error uploading image:", error);
+  //     return null;
+  //   }
+  // };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("submit values:", values);
@@ -198,25 +195,25 @@ export function ProfileForm({ session }: { session: Session | null }) {
     try {
       setLoading(true);
 
-      let uploadedUrl = null;
+      // let uploadedUrl = null;
 
-      if (imageDataUrl) {
-        let imageBlob = null;
+      // if (imageDataUrl) {
+      //   let imageBlob = null;
 
-        if (imageDataUrl.startsWith("blob:")) {
-          imageBlob = await blobUrlToBlob(imageDataUrl);
-        } else {
-          imageBlob = dataURLtoBlob(imageDataUrl);
-        }
-        uploadedUrl = await uploadImageToSupabase(imageBlob, avatarUrl);
-        setAvatarUrl(uploadedUrl);
-      }
+      //   if (imageDataUrl.startsWith("blob:")) {
+      //     imageBlob = await blobUrlToBlob(imageDataUrl);
+      //   } else {
+      //     imageBlob = dataURLtoBlob(imageDataUrl);
+      //   }
+      //   uploadedUrl = await uploadImageToSupabase(imageBlob, avatarUrl);
+      //   setAvatarUrl(uploadedUrl);
+      // }
 
       const finalValues = {
         username: values.username ?? null,
         full_name: values.full_name ?? null,
         website: values.website ?? null,
-        avatar_url: uploadedUrl ?? null,
+        avatar_url: "",
       };
 
       // Update other profile data
@@ -254,12 +251,7 @@ export function ProfileForm({ session }: { session: Session | null }) {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter user name."
-                      {...field}
-                      // value={username}
-                      // onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <Input placeholder="Enter user name." {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -275,12 +267,7 @@ export function ProfileForm({ session }: { session: Session | null }) {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter full name."
-                      {...field}
-                      // value={fullname}
-                      // onChange={(e) => setFullname(e.target.value)}
-                    />
+                    <Input placeholder="Enter full name." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -293,27 +280,24 @@ export function ProfileForm({ session }: { session: Session | null }) {
                 <FormItem>
                   <FormLabel>Website</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter web site."
-                      {...field}
-                      // value={website}
-                      // onChange={(e) => setWebsite(e.target.value)}
-                    />
+                    <Input placeholder="Enter web site." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div
+              id="avatar"
               className="flex flex-col gap-2
          w-1/2"
             >
               {/* File upload input */}
-              <div>Avatar</div>
-              <Avatar
+              {/* <div>Avatar</div> */}
+              {/* <div>{avatarUrl}</div> */}
+              {/* <Avatar
                 uid={user?.id as string}
                 url={avatarUrl as string}
-                size={150}
+                size={300}
                 onUpload={(url) => {
                   setAvatarUrl(url);
                   updateProfile({
@@ -323,16 +307,33 @@ export function ProfileForm({ session }: { session: Session | null }) {
                     avatar_url: avatarUrl,
                   });
                 }}
-              />
-              {/* <div>{JSON.stringify(`${avatarUrl}`)}</div>
+              /> */}
+            </div>
+
+            <div className="pt-0">
+              <Button type="submit" className="">
+                Update Profile
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </>
+  );
+}
+
+{
+  /* <div>{JSON.stringify(`${avatarUrl}`)}</div>
               <Image
                 alt="avatar"
                 src={`${avatarUrl}` || "/avatar-placeholder.png"}
                 width={200}
                 height={200}
                 className="rounded-full"
-              /> */}
-              {/* <label
+              /> */
+}
+{
+  /* <label
                 htmlFor="fileUpload"
                 className={buttonVariants({
                   variant: "default",
@@ -347,24 +348,16 @@ export function ProfileForm({ session }: { session: Session | null }) {
                   accept="image/*"
                   onChange={handleImageFileSelection}
                 />
-              </label> */}
-              {/* Conditional Avatar Editor */}
-              {/* {image && (
+              </label> */
+}
+{
+  /* Conditional Avatar Editor */
+}
+{
+  /* {image && (
                 <AvatarEditor
                   yourImage={image}
                   onImageCropped={onImageCropped}
                 />
-              )} */}
-            </div>
-
-            <div className="pt-0">
-              <Button type="submit" className="">
-                Update Profile
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </>
-  );
+              )} */
 }

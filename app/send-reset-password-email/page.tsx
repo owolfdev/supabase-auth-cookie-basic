@@ -68,14 +68,6 @@ export default async function ResetPasswordPage() {
         </h1>
       </div>
       <div className="w-full sm:w-[460px]">
-        {/* <div>{JSON.stringify(user)}</div> */}
-
-        {/* <ResetPassword
-        // supabase={supabase}
-        // signin={handleLogin}
-        // signup={handleSignUp}
-        /> */}
-
         <SendResetPasswordEmail />
       </div>
     </section>

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,44 +9,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Messages from "./messages";
-import axios from "axios";
-
-type AuthResult = {
-  success: boolean;
-  error?: string; // Indicates error can be undefined.
-};
-
-import GoToLoginButton from "./goToLoginButton";
+import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export function SignUp() {
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const formData = {
-  //     email: e.currentTarget.email.value,
-  //     password: e.currentTarget.password.value,
-  //     confirmPassword: e.currentTarget["confirm-password"].value,
-  //   };
-
-  //   // Validate data using zod
-  //   try {
-  //     // const validData = SignUpSchema.parse(formData);
-
-  //     // Now that validation is successful, perform the API call
-  //     const response = await axios.post("/auth/signup", validData);
-
-  //     if (response.data.success) {
-  //       // Navigate user to the login page or wherever you want
-  //       console.log("Registration successful");
-  //     } else {
-  //     }
-  //   } catch (err: any) {
-  //     // Handle validation errors from Zod or network errors
-
-  //     console.error("Error:", err);
-  //   }
-  // };
-
   return (
     <Card>
       <CardHeader>
@@ -66,10 +31,6 @@ export function SignUp() {
                 placeholder="Your email"
                 type="email"
                 required
-                // onChange={(e) => {
-                //   setAuthError(null);
-                //   setEmail(e.target.value);
-                // }}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -98,17 +59,22 @@ export function SignUp() {
               Create
             </Button>
 
-            <div className="text-sm">Already have an account?</div>
-
-            <GoToLoginButton />
+            <div className="text-sm text-muted-foreground">
+              Already have an account?
+            </div>
+            <Link
+              href="/login"
+              className={buttonVariants({
+                variant: "outline",
+                size: "default",
+              })}
+            >
+              Login
+            </Link>
           </div>
           <Messages />
         </form>
       </CardContent>
-      {/* <CardFooter> */}
-      {/* {authError && <div className="text-red-500">{authError}</div>} */}
-      {/* </CardFooter> */}
-      {/* <div className="text-gray-400 p-4">tim.coleman@hyperreal.io</div> */}
     </Card>
   );
 }

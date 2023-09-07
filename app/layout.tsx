@@ -22,6 +22,7 @@ export default function RootLayout({
       <body className="">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {pathname !== "/login" &&
+            pathname !== "/send-reset-password-email" &&
             pathname !== "/signup" &&
             pathname !== "/reset-password" && <SiteHeader />}
           {children}

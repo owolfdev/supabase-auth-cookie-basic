@@ -30,7 +30,6 @@ export default function Avatar({
         }
 
         const url = URL.createObjectURL(data);
-        console.log("url from avatar component", url);
         setAvatarUrl(url);
       } catch (error) {
         console.log("Error downloading image: ", error);
@@ -89,8 +88,8 @@ export default function Avatar({
           height={size}
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image"
-          style={{ height: size, width: size }}
+          className="rounded-full"
+          // style={{ height: size, width: size }}
         />
       ) : (
         <div

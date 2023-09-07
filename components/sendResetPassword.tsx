@@ -78,10 +78,6 @@ export function SendResetPasswordEmail() {
           <Messages />
         </form>
       </CardContent>
-      {/* <CardFooter> */}
-      {/* {authError && <div className="text-red-500">{authError}</div>} */}
-      {/* </CardFooter> */}
-      {/* <div className="text-gray-400 p-4">tim.coleman@hyperreal.io</div> */}
     </Card>
   );
 }

@@ -5,45 +5,16 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const requestUrl = new URL(request.url);
   const formData = await request.formData();
-  //   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
+
   const supabase = createRouteHandlerClient({ cookies });
 
-  //   const { error } = await supabase.auth.signInWithPassword({
-  //     email,
-  //     password,
-  //   });
-
-  const { error } = await supabase.auth.updateUser({
-    password: password,
+  supabase.auth.updateUser({
+    password,
   });
 
-  //   const resetPassword = async (email) => {
-  //     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-  //       redirectTo: 'https://example.com/reset-password',
-  //     })
-
-  //     if (error) {
-  //       console.log('Error:', error)
-  //     } else {
-  //       console.log('Password reset email sent')
-  //     }
-  //   }
-
-  if (error) {
-    return NextResponse.redirect(
-      `${requestUrl.origin}/login?error=Could not reset password`,
-      {
-        // a 301 status is required to redirect from a POST to a GET route
-        status: 301,
-      }
-    );
-  }
-
-  return NextResponse.redirect(requestUrl.origin, {
-    // a 301 status is required to redirect from a POST to a GET route
+  return NextResponse.redirect(`http://localhost:3000/`, {
     status: 301,
   });
 }
