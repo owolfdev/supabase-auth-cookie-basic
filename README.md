@@ -1,3 +1,8 @@
+todo:
+
+1. clean up folders structure.
+2. update profiles page. add avatar functionality.
+
 to exceed 30 emails per hour set up custom smtp
 
 here are the detailed instructions to set up custom SMTP and configure your own email provider:
