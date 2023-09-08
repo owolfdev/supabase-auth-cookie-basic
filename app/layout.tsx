@@ -24,7 +24,8 @@ export default function RootLayout({
           {pathname !== "/login" &&
             pathname !== "/send-reset-password-email" &&
             pathname !== "/signup" &&
-            pathname !== "/reset-password" && <SiteHeader />}
+            pathname !== "/password/reset" &&
+            pathname !== "/password/send-reset-email" && <SiteHeader />}
           {children}
         </ThemeProvider>
       </body>
