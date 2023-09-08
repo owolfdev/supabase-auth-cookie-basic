@@ -1,8 +1,8 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogIn } from "@/components/loginComponent";
-import { ResetPassword } from "@/components/resetComponent";
-import { SendResetPasswordEmail } from "@/components/sendResetPassword";
+import { LogIn } from "@/components/auth/loginComponent";
+import { ResetPassword } from "@/components/auth/resetComponent";
+import { SendResetPasswordEmail } from "@/components/auth/sendResetPassword";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Divide } from "lucide-react";

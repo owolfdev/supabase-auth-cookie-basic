@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SignUp } from "@/components/signupComponent";
+import { SignUp } from "@/components/auth/signupComponent";
 // import supabase from "@/lib/supabaseClient";
 // import useUser from "@/hooks/useUser";
 

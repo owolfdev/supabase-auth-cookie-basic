@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { AuthAvatar } from "@/components/authAvatar";
+import { AuthAvatar } from "@/components/auth/authAvatar";
 
 export function SiteHeader() {
   const { setTheme } = useTheme();

@@ -1,4 +1,4 @@
-import { ResetPassword } from "@/components/resetComponent";
+import { ResetPassword } from "@/components/auth/resetComponent";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 

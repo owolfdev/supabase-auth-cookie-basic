@@ -60,7 +60,7 @@ export function LogIn() {
               </Link>
             </div>
             <Link
-              href="/send-reset-password-email"
+              href="/password/send-reset-email"
               className="text-sm text-muted-foreground hover:cursor-pointer"
             >
               Forgot your password?

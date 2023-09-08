@@ -35,7 +35,7 @@ export function SendResetPasswordEmail() {
       const { data, error } = await supabase.auth.resetPasswordForEmail(
         formData.email,
         {
-          redirectTo: `${window.location.origin}/reset-password`,
+          redirectTo: `${window.location.origin}/password/reset`,
         }
       );
 
