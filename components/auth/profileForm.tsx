@@ -52,6 +52,10 @@ export function ProfileForm({ session }: { session: Session | null }) {
     },
   });
 
+  useEffect(() => {
+    console.log("avatarUrl:", avatarUrl);
+  }, [avatarUrl]);
+
   const { setValue } = form;
   //get profile
   const getProfile = useCallback(async () => {
@@ -293,21 +297,21 @@ export function ProfileForm({ session }: { session: Session | null }) {
             >
               {/* File upload input */}
               {/* <div>Avatar</div> */}
-              {/* <div>{avatarUrl}</div> */}
-              {/* <Avatar
+              <div>{avatarUrl}</div>
+              <Avatar
                 uid={user?.id as string}
-                url={avatarUrl as string}
+                avatarUrl={avatarUrl as string}
                 size={300}
                 onUpload={(url) => {
                   setAvatarUrl(url);
-                  updateProfile({
-                    full_name: fullname,
-                    username,
-                    website,
-                    avatar_url: avatarUrl,
-                  });
+                  // updateProfile({
+                  //   full_name: fullname,
+                  //   username,
+                  //   website,
+                  //   avatar_url: avatarUrl,
+                  // });
                 }}
-              /> */}
+              />
             </div>
 
             <div className="pt-0">

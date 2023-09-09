@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { downloadImage } from "./avatar";
 
 export function AuthAvatar() {
   const supabase = createClientComponentClient();
@@ -29,23 +30,7 @@ export function AuthAvatar() {
   }, []);
 
   useEffect(() => {
-    async function downloadImage(path: string) {
-      console.log("downloadImage, path: ", path);
-      try {
-        const { data, error } = await supabase.storage
-          .from("avatars")
-          .download(path);
-        if (error) {
-          throw error;
-        }
-        const url = URL.createObjectURL(data);
-        setUrlForRender(url);
-      } catch (error) {
-        console.log("Error downloading image: ", error);
-      }
-    }
-
-    if (avatarUrl) downloadImage(avatarUrl);
+    if (avatarUrl) downloadImage(avatarUrl, supabase, setUrlForRender);
   }, [avatarUrl, supabase]);
 
   useEffect(() => {
