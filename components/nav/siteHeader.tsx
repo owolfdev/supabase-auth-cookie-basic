@@ -17,13 +17,51 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { AuthAvatar } from "@/components/auth/authAvatar";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { get } from "http";
+
+type User = {
+  id: string;
+  // define the properties of your User type here
+};
 
 export function SiteHeader() {
+  const [user, setUser] = React.useState<User | null>(null);
   const { setTheme } = useTheme();
+  const supabase = createClientComponentClient();
   const router = useRouter();
   const handleGoToAccount = () => {
     router.push("/account");
   };
+
+  // Create a function to handle inserts
+
+  useEffect(() => {
+    // const getUser = async () => {
+    //   const {
+    //     data: { user },
+    //   } = await supabase.auth.getUser();
+    //   setUser(user);
+    // };
+    // getUser();
+    // const profile = supabase
+    //   .channel("schema-db-changes")
+    //   .on(
+    //     "postgres_changes",
+    //     {
+    //       event: "*",
+    //       schema: "public",
+    //       table: "profiles",
+    //       // filter: `id=eq.${user?.id}`,
+    //     },
+    //     (payload) => console.log("change to profiles table!!", payload)
+    //   )
+    //   .subscribe();
+    // // Unsubscribe when the component unmounts
+    // return () => {
+    //   profile.unsubscribe();
+    // };
+  }, []);
 
   const handleNavigation = () => {
     window.location.href = "/login";

@@ -1,90 +1,108 @@
-import React, { useState, useCallback } from "react";
-import Cropper from "react-easy-crop";
-import { Button } from "@/components/ui/button";
+"use client";
 
-type Area = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+import React, { useRef, useEffect, useState, use } from "react";
+import Cropper, { ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import Image from "next/image";
+import { downloadAvatarImage } from "./avatarUtils";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Button, buttonVariants } from "../ui/button";
 
 interface AvatarEditorProps {
-  yourImage: string; // assuming yourImage is a URL string
-  onImageCropped: (image: string | null) => void; // New prop
+  setAvatarFileForUpdate: (file: File | null) => void;
+  avatarUrl: string | null;
 }
 
 const AvatarEditor: React.FC<AvatarEditorProps> = ({
-  yourImage,
-  onImageCropped,
+  setAvatarFileForUpdate,
+  avatarUrl,
 }) => {
-  const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState<number>(1);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [inputImage, setInputImage] = React.useState("");
+  const [cropData, setCropData] = React.useState("");
+  const cropperRef = useRef<ReactCropperElement>(null);
+  const [blobUrlForImageRender, setBlobUrlForImageRender] =
+    useState<string>("");
+  const supabase = createClientComponentClient();
 
-  const onCropComplete = useCallback(
-    async (croppedArea: Area, croppedAreaPixels: Area) => {
-      const croppedImage = await getCroppedImg(yourImage, croppedAreaPixels);
-      setCroppedImage(croppedImage);
-      onImageCropped(croppedImage); // Call the callback
-    },
-    [yourImage, onImageCropped]
-  );
+  const onCrop = () => {
+    const cropper = cropperRef.current?.cropper;
+    const dataURL = cropper?.getCroppedCanvas().toDataURL();
+    setCropData(cropper?.getCroppedCanvas().toDataURL() as any);
+    const file = dataURLtoFile(dataURL, "image.png");
+    setAvatarFileForUpdate(file);
+    console.log(file);
+  };
 
-  const createImage = (url: string) =>
-    new Promise<HTMLImageElement>((resolve, reject) => {
-      const image = new Image();
-      image.addEventListener("load", () => resolve(image));
-      image.addEventListener("error", (error) => reject(error));
-      image.src = url;
-    });
+  useEffect(() => {
+    if (avatarUrl)
+      downloadAvatarImage(avatarUrl, supabase, setBlobUrlForImageRender);
+  }, [avatarUrl, supabase]);
 
-  async function getCroppedImg(imageSrc: string, crop: Area): Promise<string> {
-    const image = await createImage(imageSrc);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d")!;
-
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-
-    ctx.drawImage(
-      image,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
-
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          reject(new Error("Canvas is empty"));
-          return;
-        }
-        resolve(window.URL.createObjectURL(blob));
-      }, "image/jpeg");
-    });
+  function dataURLtoFile(dataurl: any, filename: string) {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
   }
 
+  const handleInputFile = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setInputImage(reader.result as any);
+      onCrop();
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
-    <>
-      <div style={{ position: "relative", width: "200px", height: "200px" }}>
+    <div>
+      <input
+        name="avatar-input"
+        id="avatar-input"
+        className="hidden"
+        type="file"
+        accept="image/*"
+        onChange={handleInputFile}
+      />
+      <div id="cropper-container">
         <Cropper
-          image={yourImage}
-          crop={crop}
-          zoom={zoom}
-          aspect={1} // 1:1 ratio for a round image
-          cropShape="round" // Crop shape set to round
-          onCropChange={setCrop}
-          onCropComplete={onCropComplete}
-          onZoomChange={setZoom}
+          src={inputImage || blobUrlForImageRender}
+          style={{ width: "100%" }}
+          // Cropper.js options
+          initialAspectRatio={1 / 1}
+          aspectRatio={1 / 1}
+          guides={false}
+          ref={cropperRef}
+          // viewMode={0}
         />
       </div>
-    </>
+      <div className="mt-2">
+        <div className="flex gap-2 w-full">
+          <label
+            className={`py-2 px-4 min-w-[110px] ${buttonVariants({
+              variant: "ghost",
+              size: "default",
+            })}`}
+            htmlFor="avatar-input"
+          >
+            Load New
+          </label>
+          <Button
+            variant="ghost"
+            className="py-2 px-4 min-w-[70px]"
+            onClick={onCrop}
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

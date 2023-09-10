@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, use } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { downloadImage } from "./avatar";
-
+import { downloadAvatarImage } from "./avatarUtils";
+//
 export function AuthAvatar() {
   const supabase = createClientComponentClient();
   const [user, setUser] = useState<any>(null);
@@ -12,8 +12,25 @@ export function AuthAvatar() {
   const [username, setUsername] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>("");
-  const [urlForRender, setUrlForRender] = useState<string>("");
+  const [blobUrlForImageRender, setBlobUrlForImageRender] =
+    useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  interface PayloadNew {
+    avatar_url: string;
+    // define other properties here, if necessary
+  }
+
+  interface Payload {
+    new: PayloadNew;
+    // define other properties here, if necessary
+  }
+
+  interface User {
+    id: string;
+    email: string[];
+    // define other properties here, if necessary
+  }
 
   const getUser = async () => {
     const {
@@ -27,20 +44,52 @@ export function AuthAvatar() {
       const user = await getUser();
       setUser(user);
     })();
+
+    const profile = supabase
+      .channel("schema-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "profiles",
+          // filter: `id=eq.${user?.id}`,
+        },
+        (payload: any) => {
+          console.log("change to profiles table!!", payload);
+          downloadAvatarImage(
+            payload.new.avatar_url,
+            supabase,
+            setBlobUrlForImageRender
+          );
+        }
+      )
+      .subscribe();
+
+    // Unsubscribe when the component unmounts
+    return () => {
+      profile.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
-    if (avatarUrl) downloadImage(avatarUrl, supabase, setUrlForRender);
+    if (avatarUrl)
+      downloadAvatarImage(avatarUrl, supabase, setBlobUrlForImageRender);
   }, [avatarUrl, supabase]);
 
+  // useEffect(() => {
+  //   console.log("avatarUrl:", avatarUrl);
+  //   console.log("urlForRender:", blobUrlForImageRender);
+  // }, [avatarUrl, blobUrlForImageRender]);
+
   useEffect(() => {
-    console.log("user", user);
-    console.log("user email", user?.email);
+    // console.log("user", user);
+    // console.log("user email", user?.email);
     setInitials(getInitialsAndCapitalize(user?.email[0]));
   }, [user]);
 
   const getInitialsAndCapitalize = (name: string) => {
-    console.log("name from get initials", name);
+    // console.log("name from get initials", name);
     // const nameArray = name?.split(" ");
     // const initials = nameArray?.map((name) => name[0]?.toUpperCase());
     // const initialsString = initials?.join("");
@@ -89,7 +138,7 @@ export function AuthAvatar() {
         <div className="flex items-center ">
           <Avatar className="flex justify-center items-center">
             <AvatarImage
-              src={urlForRender}
+              src={blobUrlForImageRender}
               alt={`avatar`}
               className="rounded-full border w-8 h-8"
             />
