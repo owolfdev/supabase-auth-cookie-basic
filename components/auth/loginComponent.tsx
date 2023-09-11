@@ -44,10 +44,10 @@ export function LogIn() {
             </div>
           </div>
           <div className="flex flex-col gap-8">
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
+            <div className="flex flex-row justify-between gap-4 pt-8 items-center">
               <Button type="submit">Log In</Button>
 
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted-foreground hidden sm:block">
                 Don't have an account?
               </div>
               <Link

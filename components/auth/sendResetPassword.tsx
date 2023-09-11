@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { SendHorizontal } from "lucide-react";
 
 type AuthResult = {
   success: boolean;
@@ -21,6 +23,7 @@ type AuthResult = {
 
 export function SendResetPasswordEmail() {
   const supabase = createClientComponentClient();
+  const router = useRouter();
   //
   const handleSendResetPasswordEmail = async (
     e: React.FormEvent<HTMLFormElement>
@@ -38,6 +41,10 @@ export function SendResetPasswordEmail() {
           redirectTo: `${window.location.origin}/password/reset`,
         }
       );
+
+      const message = "Password reset email sent. Please check your inbox.";
+
+      router.push(`/password/send-reset-email?message=${message}`);
 
       if (error) {
         console.log("Error:", error);
@@ -73,7 +80,10 @@ export function SendResetPasswordEmail() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
-            <Button type="submit">Reset</Button>
+            <Button type="submit" className="flex gap-2">
+              Send
+              <SendHorizontal size={20} />
+            </Button>
           </div>
           <Messages />
         </form>

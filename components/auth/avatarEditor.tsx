@@ -72,7 +72,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
       />
       <div id="cropper-container">
         <Cropper
-          src={inputImage || blobUrlForImageRender}
+          src={inputImage || blobUrlForImageRender || "/avatar-placeholder.jpg"}
           style={{ width: "100%" }}
           // Cropper.js options
           initialAspectRatio={1 / 1}
