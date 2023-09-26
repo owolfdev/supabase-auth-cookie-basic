@@ -27,6 +27,7 @@ const formSchema = z.object({
   username: z.string().optional(),
   fullname: z.string().optional(),
   website: z.string().optional(),
+  company: z.string().optional(),
 });
 
 interface ProfileData {
@@ -34,6 +35,7 @@ interface ProfileData {
   username: string | null;
   website: string | null;
   avatarUrl: string | null;
+  company: string | null;
 }
 
 interface ProfileFormProps {
@@ -44,6 +46,7 @@ interface FormValues {
   username: string | null;
   fullname: string | null;
   website: string | null;
+  company: string | null;
 }
 
 export function ProfileForm({ session }: ProfileFormProps) {
@@ -55,6 +58,7 @@ export function ProfileForm({ session }: ProfileFormProps) {
     username: "",
     website: "",
     avatarUrl: null,
+    company: "",
   });
   const [avatarUrlForUpdate, setAvatarUrlForUpdate] = useState<string | null>(
     null
@@ -85,6 +89,7 @@ export function ProfileForm({ session }: ProfileFormProps) {
       username: profile.username,
       fullname: profile.fullname,
       website: profile.website,
+      company: profile.company,
     },
   });
 
@@ -97,7 +102,7 @@ export function ProfileForm({ session }: ProfileFormProps) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`full_name, username, website, avatar_url`)
+        .select(`full_name, username, website, avatar_url, company`)
         .eq("id", user?.id)
         .single();
 
@@ -109,11 +114,13 @@ export function ProfileForm({ session }: ProfileFormProps) {
           username: data.username,
           website: data.website,
           avatarUrl: data.avatar_url,
+          company: data.company,
         });
 
         setValue("username", data.username || "");
         setValue("fullname", data.full_name || "");
         setValue("website", data.website || "");
+        setValue("company", data.company || "");
       }
     } catch (error) {
       setError("Error loading user data!");
@@ -131,6 +138,7 @@ export function ProfileForm({ session }: ProfileFormProps) {
     website,
     fullname,
     avatarUrl,
+    company,
   }: ProfileData): Promise<void> {
     try {
       setLoading(true);
@@ -142,6 +150,7 @@ export function ProfileForm({ session }: ProfileFormProps) {
         website: website,
         avatar_url: avatarUrl,
         updated_at: new Date().toISOString(),
+        company: company,
       });
 
       if (error) throw error;
@@ -262,6 +271,23 @@ export function ProfileForm({ session }: ProfileFormProps) {
                   <FormControl>
                     <Input
                       placeholder="Enter full name."
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter company name."
                       {...field}
                       value={field.value || ""}
                     />

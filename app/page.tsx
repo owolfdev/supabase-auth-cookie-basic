@@ -22,10 +22,9 @@ export default async function Home() {
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
           Supabase Auth Template with Next.js 13
         </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
+        <p className="max-w-[700px] text-lg text-foreground">
           A ready-to-use authentication template leveraging Supabase and Next.js
-          13, styled with the Shadcn/ui component collection. Start building
-          your secure app with ease!
+          13, styled with the Shadcn/ui component collection.
         </p>
         <p className="max-w-[700px] text-base text-muted-foreground">
           In a Next.js 13 application with Supabase integration, utilizing
