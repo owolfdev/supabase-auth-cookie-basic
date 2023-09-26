@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import { useSearchParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
+import { MoveLeft } from "lucide-react";
 
 export function ResetPassword() {
   const supabase = createClientComponentClient();
@@ -48,6 +50,17 @@ export function ResetPassword() {
           </div>
           <Messages />
         </form>
+        <div className="pt-4">
+          <Link
+            href="/login"
+            className="text-sm text-muted-foreground hover:cursor-pointer "
+          >
+            <div className="flex gap-2 items-center">
+              <MoveLeft />
+              <span>Back to Log In</span>
+            </div>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

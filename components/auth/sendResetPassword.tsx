@@ -14,7 +14,9 @@ import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, MoveLeft } from "lucide-react";
+
+import Link from "next/link";
 
 type AuthResult = {
   success: boolean;
@@ -42,14 +44,14 @@ export function SendResetPasswordEmail() {
         }
       );
 
-      const message = "Password reset email sent. Please check your inbox.";
-
-      router.push(`/password/send-reset-email?message=${message}`);
-
       if (error) {
         console.log("Error:", error);
+        const message = "Error sending password update email.";
+        router.push(`/password/send-reset-email?message=${message} ${error}.`);
       } else {
         console.log("Password reset email sent", data);
+        const message = "Password reset email sent. Please check your inbox.";
+        router.push(`/password/send-reset-email?message=${message}`);
       }
     } catch (err: any) {
       console.error("Error:", err);
@@ -87,6 +89,17 @@ export function SendResetPasswordEmail() {
           </div>
           <Messages />
         </form>
+        <div className="pt-4">
+          <Link
+            href="/login"
+            className="text-sm text-muted-foreground hover:cursor-pointer "
+          >
+            <div className="flex gap-2 items-center">
+              <MoveLeft />
+              <span>Back to Log In</span>
+            </div>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
