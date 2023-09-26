@@ -34,7 +34,7 @@ export default async function Home() {
           need to be explicitly managed on the client-side through storage
           solutions like localStorage or sessionStorage, cookie-based
           authentication abstracts away much of this manual management. Once a
-          cookie is set by the server on the client's browser, the browser
+          cookie is set by the server on the clients browser, the browser
           automatically sends the cookie along with each subsequent request to
           the server. This way, the server can maintain user state between
           requests without requiring additional client-side code to handle
