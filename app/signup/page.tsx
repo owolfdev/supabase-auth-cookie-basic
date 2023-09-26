@@ -5,6 +5,8 @@ import { SignUp } from "@/components/auth/signupComponent";
 // import supabase from "@/lib/supabaseClient";
 // import useUser from "@/hooks/useUser";
 
+export const dynamic = "force-dynamic";
+
 export default function SignInPage() {
   const [theme, setTheme] = useState("");
   // const [user, setUser] = useState({});

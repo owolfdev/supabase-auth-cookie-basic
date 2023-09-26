@@ -2,6 +2,8 @@ import { ResetPassword } from "@/components/auth/resetComponent";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export default async function ResetPasswordPage() {
   return (
     <section className="container flex flex-col items-center justify-center gap-6 pt-12 ">

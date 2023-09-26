@@ -9,6 +9,8 @@ import { Divide } from "lucide-react";
 // import supabase from "@/lib/supabaseClient";
 // import useUser from "@/hooks/useUser";
 
+export const dynamic = "force-dynamic";
+
 export default async function ResetPasswordPage() {
   const supabase = createServerComponentClient({ cookies });
   // const { user } = useUser();
