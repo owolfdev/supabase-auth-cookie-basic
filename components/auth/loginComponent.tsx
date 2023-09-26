@@ -48,7 +48,7 @@ export function LogIn() {
               <Button type="submit">Log In</Button>
 
               <div className="text-sm text-muted-foreground hidden sm:block">
-                Don't have an account?
+                Dont have an account?
               </div>
               <Link
                 href="/signup"
