@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 import {
   Card,
   CardContent,
@@ -12,16 +15,31 @@ import Messages from "./messages";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 
+import { Loader2 } from "lucide-react";
+
 export function SignUp() {
+  const [isSigningUp, setSigningUp] = useState(false);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setSigningUp(true);
+  };
+
   return (
     <Card>
+      {isSigningUp && (
+        <div className="absolute w-[320px] h-[300px] sm:w-[450px] sm:h-[400px] z-20">
+          <div className="fixed h-full w-full bg-black opacity-50 z-0 top-0 right-0"></div>
+          <div className="flex justify-center align-middle items-center h-full w-full">
+            <Loader2 className="w-20 h-20 animate-spin z-10" />
+          </div>
+        </div>
+      )}
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
 
         <CardDescription>Use your email and password.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action="/auth/sign-up" method="post">
+        <form onSubmit={handleSubmit} action="/auth/sign-up" method="post">
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Email</Label>
@@ -54,12 +72,12 @@ export function SignUp() {
               />
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-8 items-center">
+          <div className="flex  justify-between gap-4 pt-8 items-center">
             <Button formAction="/auth/sign-up" type="submit">
               Create
             </Button>
 
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground hidden sm:block">
               Already have an account?
             </div>
             <Link

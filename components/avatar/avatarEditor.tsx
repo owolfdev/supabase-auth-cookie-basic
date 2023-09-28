@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState, use } from "react";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import Image from "next/image";
-import { downloadAvatarImage } from "./avatarUtils";
+// import { downloadAvatarImage } from "./avatarUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button, buttonVariants } from "../ui/button";
 

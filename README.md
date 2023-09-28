@@ -1,13 +1,6 @@
-todo:
+The rate limit on emails if you don't have a custom SMTP server set up is 4 emails per hour. That means that you will only be able to sign up 4 users per hour.
 
-1. clean up folders structure.
-2. update profiles page. add avatar functionality.
-
-to exceed 30 emails per hour set up custom smtp
-
-here are the detailed instructions to set up custom SMTP and configure your own email provider:
-
-Set up Custom SMTP
+Set up Custom SMTP to increase the rate:
 
 Go to the Auth Settings Page in your Supabase project.
 
