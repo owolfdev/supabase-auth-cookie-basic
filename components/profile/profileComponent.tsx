@@ -1,7 +1,7 @@
 "use client";
 
 // Importing the necessary resources and components
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
 import Image from "next/image";
@@ -14,7 +14,7 @@ import { ProfileData } from "@/types/profile";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { Loader2 } from "lucide-react";
+import AvatarEditor from "../avatar/avatarEditor";
 
 export function Profile() {
   // Using the custom hooks to get the user and profile data
@@ -27,7 +27,18 @@ export function Profile() {
 
   const supabase = createClientComponentClient();
 
+  const [avatarFileForUpdate, setAvatarFileForUpdate] = useState<File | null>(
+    null
+  );
+
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (avatarFileForUpdate) {
+      console.log("avatarFileForUpdate", avatarFileForUpdate);
+      // uploadAvatar(avatarFileForUpdate);
+    }
+  }, [avatarFileForUpdate]);
 
   if (!user || loading) {
     return (
@@ -106,21 +117,14 @@ export function Profile() {
             )}
           </div>
         </div>
-        {/* avatar */}
+        {/* avatar editor */}
         <div>
-          {blobUrl && (
-            <Image
-              src={blobUrl}
-              alt="avatar"
-              height={200}
-              width={200}
-              layout="cover"
-            />
-          )}
+          <AvatarEditor
+            setAvatarFileForUpdate={setAvatarFileForUpdate}
+            avatarUrl={blobUrl || "/avatar-placeholder.jpg"}
+          />
         </div>
-        <div className="text-sm text-gray-500">
-          Profile: {JSON.stringify(profile)}
-        </div>
+        {/* avatar editor */}
         <Toaster />
       </div>
     </>

@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect, useState, use } from "react";
+import React, { useRef } from "react";
+import Image from "next/image";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import Image from "next/image";
-// import { downloadAvatarImage } from "./avatarUtils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
 
 interface AvatarEditorProps {
   setAvatarFileForUpdate: (file: File | null) => void;
@@ -18,28 +16,17 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
   avatarUrl,
 }) => {
   const [inputImage, setInputImage] = React.useState("");
-  const [cropData, setCropData] = React.useState("");
-  const cropperRef = useRef<ReactCropperElement>(null);
-  const [blobUrlForImageRender, setBlobUrlForImageRender] =
-    useState<string>("");
-  const supabase = createClientComponentClient();
 
-  const onCrop = () => {
+  const getCroppedImageFromCropper = () => {
     const cropper = cropperRef.current?.cropper;
     const dataURL = cropper?.getCroppedCanvas().toDataURL();
-    setCropData(cropper?.getCroppedCanvas().toDataURL() as any);
     const file = dataURLtoFile(dataURL, "image.png");
     setAvatarFileForUpdate(file);
-    console.log(file);
+    // console.log(file);
   };
 
-  useEffect(() => {
-    if (avatarUrl)
-      downloadAvatarImage(avatarUrl, supabase, setBlobUrlForImageRender);
-  }, [avatarUrl, supabase]);
-
-  function dataURLtoFile(dataurl: any, filename: string) {
-    var arr = dataurl.split(","),
+  function dataURLtoFile(dataUrl: any, filename: string) {
+    var arr = dataUrl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]),
       n = bstr.length,
@@ -50,30 +37,13 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
     return new File([u8arr], filename, { type: mime });
   }
 
-  const handleInputFile = (e: any) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setInputImage(reader.result as any);
-      onCrop();
-    };
-    reader.readAsDataURL(file);
-  };
-
+  const cropperRef = useRef<ReactCropperElement>(null);
   return (
-    <div>
-      <input
-        name="avatar-input"
-        id="avatar-input"
-        className="hidden"
-        type="file"
-        accept="image/*"
-        onChange={handleInputFile}
-      />
-      <div id="cropper-container">
+    <>
+      <div id="avatar-editor-container" className="flex flex-col gap-8">
         <Cropper
-          src={inputImage || blobUrlForImageRender || "/avatar-placeholder.jpg"}
-          style={{ width: "100%" }}
+          src={inputImage || avatarUrl || "/avatar-placeholder.jpg"}
+          style={{ height: 200, width: 200 }}
           // Cropper.js options
           initialAspectRatio={1 / 1}
           aspectRatio={1 / 1}
@@ -81,28 +51,12 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
           ref={cropperRef}
           // viewMode={0}
         />
+
+        <Button className="" onClick={getCroppedImageFromCropper}>
+          Confirm
+        </Button>
       </div>
-      <div className="mt-2">
-        <div className="flex gap-2 w-full">
-          <label
-            className={`py-2 px-4 min-w-[110px] ${buttonVariants({
-              variant: "ghost",
-              size: "default",
-            })}`}
-            htmlFor="avatar-input"
-          >
-            Load New
-          </label>
-          <Button
-            variant="ghost"
-            className="py-2 px-4 min-w-[70px]"
-            onClick={onCrop}
-          >
-            Confirm
-          </Button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
