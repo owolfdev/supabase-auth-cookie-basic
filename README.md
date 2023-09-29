@@ -1,3 +1,11 @@
+to create a remote branch
+git push --set-upstream origin <branch-name>
+
+delete the remote branch
+git push origin --delete <branch-name>
+
+--
+
 The rate limit on emails if you don't have a custom SMTP server set up is 4 emails per hour. That means that you will only be able to sign up 4 users per hour.
 
 Set up Custom SMTP to increase the rate:

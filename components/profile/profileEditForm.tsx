@@ -32,11 +32,13 @@ type FormValues = {
 interface ProfileFormProps {
   onSubmit: SubmitHandler<FormValues>;
   defaultValues: FormValues;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   onSubmit,
   defaultValues,
+  setIsEditing,
 }) => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -60,6 +62,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                   placeholder="Enter user name."
                   {...field}
                   value={field.value || ""}
+                  className="text-lg sm:text-base"
                 />
               </FormControl>
               {/* <FormDescription>
@@ -80,6 +83,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                   placeholder="Enter full name."
                   {...field}
                   value={field.value || ""}
+                  className="text-lg sm:text-base"
                 />
               </FormControl>
               <FormMessage />
@@ -97,6 +101,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                   placeholder="Enter company name."
                   {...field}
                   value={field.value || ""}
+                  className="text-lg sm:text-base"
                 />
               </FormControl>
               <FormMessage />
@@ -114,16 +119,24 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                   placeholder="Enter web site."
                   {...field}
                   value={field.value || ""}
+                  className="text-lg sm:text-base"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="pt-0">
-          {/* <Button type="submit" className="">
+        <div className="flex gap-4 pt-2">
+          <Button
+            variant={`destructive`}
+            className=""
+            onClick={() => setIsEditing(false)}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" className="">
             Update Profile
-          </Button> */}
+          </Button>
         </div>
       </form>
     </Form>

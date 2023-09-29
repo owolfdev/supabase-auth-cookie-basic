@@ -31,12 +31,13 @@ export const useProfile = (userId: string | null) => {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select("full_name, username, website, avatar_url")
+        .select("full_name, username, website, avatar_url, company")
         .eq("id", userId)
         .single();
 
       if (error && status !== 406) throw error;
       if (data) {
+        // console.log("Profile data: ", data);
         setProfile(data);
         if (data.avatar_url) {
           await downloadAvatarImage(data.avatar_url);
@@ -53,5 +54,5 @@ export const useProfile = (userId: string | null) => {
     getProfile();
   }, [userId]);
 
-  return { profile, loading, blobUrl };
+  return { profile, loading, blobUrl, refetch: getProfile };
 };
