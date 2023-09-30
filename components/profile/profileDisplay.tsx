@@ -1,8 +1,26 @@
 import { Profile } from "@/types/profile";
 
-export const ProfileDisplay = ({ profile }: { profile: Profile }) => {
+type User = {
+  id: string;
+  email: string;
+};
+
+export const ProfileDisplay = ({
+  profile,
+  user,
+}: {
+  profile: Profile;
+  user: User;
+}) => {
   return (
     <div className="flex flex-col gap-6 mb-8">
+      <div className="flex flex-col gap-3">
+        <div className="text-sm">Email</div>
+        <div className="text-lg sm:text-base pl-2">{user.email}</div>
+        <div className="text-sm text-muted-foreground">
+          Your account is linked to this email.
+        </div>
+      </div>
       <div className="flex flex-col gap-3">
         <div className="text-sm">User Name</div>
         <div className="text-lg sm:text-base pl-2">{profile?.username}</div>

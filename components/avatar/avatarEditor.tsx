@@ -37,6 +37,17 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
     return new File([u8arr], filename, { type: mime });
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setInputImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const cropperRef = useRef<ReactCropperElement>(null);
   return (
     <>
@@ -52,6 +63,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
           // viewMode={0}
         />
 
+        <input type="file" accept="image/*" onChange={handleFileChange} />
         <Button className="" onClick={getCroppedImageFromCropper}>
           Confirm
         </Button>

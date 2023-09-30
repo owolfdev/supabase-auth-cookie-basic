@@ -33,12 +33,19 @@ interface ProfileFormProps {
   onSubmit: SubmitHandler<FormValues>;
   defaultValues: FormValues;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User;
 }
+
+type User = {
+  id: string;
+  email: string;
+};
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   onSubmit,
   defaultValues,
   setIsEditing,
+  user,
 }) => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -47,6 +54,13 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
 
   return (
     <Form {...form}>
+      <div className="flex flex-col gap-3 pb-4">
+        <div className="text-sm">Email</div>
+        <div className="text-lg sm:text-base pl-2">{user.email}</div>
+        <div className="text-sm text-muted-foreground">
+          Your account is linked to this email. (You cannot change this)
+        </div>
+      </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 w-full max-w-[340px]"
@@ -56,7 +70,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>User Name</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter user name."

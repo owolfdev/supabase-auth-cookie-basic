@@ -17,6 +17,8 @@ export const useProfile = (userId: string | null) => {
         throw error;
       }
 
+      console.log("Avatar image downloaded: ", data);
+
       const url = URL.createObjectURL(data);
       setBlobUrl(url);
     } catch (error) {
@@ -40,6 +42,7 @@ export const useProfile = (userId: string | null) => {
         // console.log("Profile data: ", data);
         setProfile(data);
         if (data.avatar_url) {
+          console.log("Downloading avatar image: ", data.avatar_url);
           await downloadAvatarImage(data.avatar_url);
         }
       }
