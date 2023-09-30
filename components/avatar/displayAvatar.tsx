@@ -6,9 +6,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
-export function AuthAvatar() {
+export function DisplayAvatar() {
   // Using the custom hooks to get the user and profile data
+  const [isUpdatingAvatarImage, setIsUpdatingAvatarImage] = useState(false);
   const user = useUser();
   const { profile, loading, blobUrl, refetch } = useProfile(user?.id);
 
@@ -31,7 +34,7 @@ export function AuthAvatar() {
     if (!user?.id) return;
 
     const channel = supabase
-      .channel("schema-db-changes-for-auth-avatar")
+      .channel("schema-db-changes-for-display-avatar")
       .on(
         "postgres_changes",
         {
@@ -41,9 +44,14 @@ export function AuthAvatar() {
         },
         (payload) => {
           // console.log("Change received!", payload);
+          setIsUpdatingAvatarImage(true);
           if (payload.old.id === user?.id) {
             // console.log("Updating profile...");
-            refetch();
+
+            refetch().then((data) => {
+              setIsUpdatingAvatarImage(false);
+              console.log("Profile updated!");
+            });
           }
         }
       )
@@ -59,16 +67,21 @@ export function AuthAvatar() {
     <>
       <div className="flex items-center text-xs text-gray-400">
         <div className="flex items-center ">
-          <Avatar className="flex justify-center items-center">
-            <AvatarImage
-              src={blobUrl || ""}
-              alt={`avatar`}
-              className="rounded-full border w-8 h-8"
-            />
-            <AvatarFallback>
-              <span className="text-lg">{initials}</span>
-            </AvatarFallback>
-          </Avatar>
+          {isUpdatingAvatarImage && (
+            <div className="absolute w-[200px] h-[200px] sm:w-[200px] sm:h-[200px] z-20">
+              <div className="fixed h-full w-full bg-black opacity-50 z-0 top-0 right-0"></div>
+              <div className="flex justify-center align-middle items-center h-full w-full">
+                <Loader2 className="w-20 h-20 animate-spin z-10" />
+              </div>
+            </div>
+          )}
+          <Image
+            src={blobUrl || "/avatar-placeholder.jpg"}
+            alt={`avatar`}
+            width={200}
+            height={200}
+            className="rounded border"
+          />
         </div>
       </div>
     </>

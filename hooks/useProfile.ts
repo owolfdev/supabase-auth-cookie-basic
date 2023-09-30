@@ -18,7 +18,7 @@ export const useProfile = (userId: string | null) => {
         throw error;
       }
 
-      console.log("Avatar image downloaded: ", data);
+      // console.log("Avatar image downloaded: ", data);
 
       const url = URL.createObjectURL(data);
       setBlobUrl(url);
@@ -43,7 +43,7 @@ export const useProfile = (userId: string | null) => {
         // console.log("Profile data: ", data);
         setProfile(data);
         if (data.avatar_url) {
-          console.log("Downloading avatar image: ", data.avatar_url);
+          // console.log("Downloading avatar image: ", data.avatar_url);
           await downloadAvatarImage(data.avatar_url);
         }
       }
@@ -55,35 +55,8 @@ export const useProfile = (userId: string | null) => {
   };
 
   useEffect(() => {
-    // getProfile();
-  }, [userId]);
-
-  const subscribeToAvatarUpdates = useCallback(() => {
-    if (!userId) return;
-
-    const channel = supabase
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "profiles",
-        },
-        (payload) => {
-          console.log("Change received!", payload);
-          // getProfile();
-        }
-      )
-      .subscribe();
-  }, [userId]);
-
-  useEffect(() => {
-    console.log("Subscribing to avatar updates...");
     getProfile();
-    const unsubscribe = subscribeToAvatarUpdates();
-    return unsubscribe;
-  }, [userId, subscribeToAvatarUpdates]);
+  }, [userId]);
 
   return { profile, loading, blobUrl, refetch: getProfile };
 };

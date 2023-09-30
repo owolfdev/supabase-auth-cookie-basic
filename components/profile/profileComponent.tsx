@@ -1,7 +1,7 @@
 "use client";
 
 // Importing the necessary resources and components
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useUser } from "@/hooks/useUser";
 import { useProfile } from "@/hooks/useProfile";
 import Image from "next/image";
@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import AvatarEditor from "../avatar/avatarEditor";
 import { set } from "react-hook-form";
+import { DisplayAvatar } from "../avatar/displayAvatar";
 
 export function Profile() {
   // Using the custom hooks to get the user and profile data
@@ -23,7 +24,8 @@ export function Profile() {
   const { profile, loading, blobUrl, refetch } = useProfile(user?.id);
   const [error, setError] = useState<string | null>(null);
   // A state to toggle between edit/view mode
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const supabase = createClientComponentClient();
   const [avatarFileForUpdate, setAvatarFileForUpdate] = useState<File | null>(
     null
@@ -36,7 +38,7 @@ export function Profile() {
 
   useEffect(() => {
     if (avatarFileForUpdate) {
-      console.log("avatarFileForUpdate", avatarFileForUpdate);
+      // console.log("avatarFileForUpdate", avatarFileForUpdate);
       const url = URL.createObjectURL(avatarFileForUpdate);
       setAvatarImageForUpdate(url);
       uploadAvatar(avatarFileForUpdate);
@@ -44,28 +46,38 @@ export function Profile() {
   }, [avatarFileForUpdate]);
 
   const uploadAvatar = async (file: File) => {
-    console.log("uploadAvatar function");
+    // console.log("uploadAvatar function");
     try {
-      console.log("trying to upload avatar");
+      // console.log("trying to upload avatar");
+
+      // Delete the old avatar from the storage
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", user?.id)
+        .single();
+
+      console.log("deleting old avatar", profile.avatar_url);
 
       const { error: deleteError } = await supabase.storage
         .from("avatars")
-        .remove([`${user?.id}.avatar`]);
+        .remove(data?.avatar_url);
 
-      console.log("uploading file");
+      if (deleteError) throw deleteError;
+      console.log("deleted old avatar");
+
+      // console.log("uploading file");
 
       const now = new Date();
       const time = Math.floor(now.getTime() / 1000);
       const avatarUrl = `${user?.id}.${time}.avatar`;
-      console.log("avatarUrl", avatarUrl);
 
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(avatarUrl, file);
 
       if (uploadError) throw uploadError;
-
-      // Construct the avatar URL
 
       // Update the profile with the new avatar URL
       await updateProfile({ ...profile, avatarUrl });
@@ -115,6 +127,10 @@ export function Profile() {
     } catch (error) {
       setError("Error updating the data");
     } finally {
+      if (isEditingProfile) {
+        refetch();
+      }
+      // refetch();
       toast({
         title: "Profile Updated!",
         description: "Your profile has been updated successfully.",
@@ -125,20 +141,20 @@ export function Profile() {
 
   // Function to update the profile
   const onSubmit = async (values: any) => {
-    console.log("values", values);
+    // console.log("values", values);
     await updateProfile(values);
-    setIsEditing(false); // Set back to view mode after updating
+    setIsEditingProfile(false); // Set back to view mode after updating
   };
 
   return (
     <>
       <div className="flex flex-col gap-12">
         <div>
-          {isEditing ? (
+          {isEditingProfile ? (
             <ProfileForm
               user={user}
               onSubmit={onSubmit}
-              setIsEditing={setIsEditing}
+              setIsEditing={setIsEditingProfile}
               defaultValues={{
                 username: profile.username,
                 full_name: profile.full_name,
@@ -150,8 +166,8 @@ export function Profile() {
             <ProfileDisplay profile={profile} user={user} />
           )}
           <div className="flex gap-4">
-            {!isEditing && (
-              <Button className="" onClick={() => setIsEditing(true)}>
+            {!isEditingProfile && (
+              <Button className="" onClick={() => setIsEditingProfile(true)}>
                 Edit Profile
               </Button>
             )}
@@ -159,19 +175,26 @@ export function Profile() {
         </div>
         {/* avatar editor */}
         <div>
-          <div>Test blob url</div>
-          <div>{JSON.stringify(blobUrl)}</div>
-          <img src={blobUrl || "kitten.jpg"} className="w-[200px]" />
-          <div>Test cropped image</div>
-          <img
-            src={avatarImageForUpdate || "/avatar-placeholder.jpg"}
-            className="w-[200px]"
-          />
-          <div>Test avatar editor</div>
-          <AvatarEditor
-            setAvatarFileForUpdate={setAvatarFileForUpdate}
-            avatarUrl={blobUrl || "/avatar-placeholder.jpg"}
-          />
+          <div className="flex flex-col gap-4">
+            {!isEditingAvatar && (
+              <>
+                <div>Your Avatar</div>
+                <DisplayAvatar />
+                <div>
+                  <Button className="" onClick={() => setIsEditingAvatar(true)}>
+                    Edit Avatar
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+          {isEditingAvatar && (
+            <AvatarEditor
+              setAvatarFileForUpdate={setAvatarFileForUpdate}
+              avatarUrl={blobUrl || "/avatar-placeholder.jpg"}
+              setIsEditingAvatar={setIsEditingAvatar}
+            />
+          )}
         </div>
         {/* avatar editor */}
         <Toaster />
