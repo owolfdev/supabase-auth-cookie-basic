@@ -141,15 +141,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           )}
         />
         <div className="flex gap-4 pt-2">
-          <Button
-            variant={`destructive`}
-            className=""
-            onClick={() => setIsEditing(false)}
-          >
+          <Button type="submit">Update Profile</Button>
+          <Button variant={`destructive`} onClick={() => setIsEditing(false)}>
             Cancel
-          </Button>
-          <Button type="submit" className="">
-            Update Profile
           </Button>
         </div>
       </form>

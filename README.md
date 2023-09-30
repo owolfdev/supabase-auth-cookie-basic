@@ -6,6 +6,12 @@ git push origin --delete <branch-name>
 
 --
 
+todo:
+
+subscription seems to be working from useProfile. check the log: Change received! so these values need to be passed to download avatar I think to get the new avatar.
+
+--
+
 The rate limit on emails if you don't have a custom SMTP server set up is 4 emails per hour. That means that you will only be able to sign up 4 users per hour.
 
 Set up Custom SMTP to increase the rate:

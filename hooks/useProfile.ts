@@ -55,7 +55,7 @@ export const useProfile = (userId: string | null) => {
   };
 
   useEffect(() => {
-    getProfile();
+    // getProfile();
   }, [userId]);
 
   const subscribeToAvatarUpdates = useCallback(() => {
@@ -72,14 +72,10 @@ export const useProfile = (userId: string | null) => {
         },
         (payload) => {
           console.log("Change received!", payload);
-          getProfile();
+          // getProfile();
         }
       )
       .subscribe();
-
-    return () => {
-      channel.unsubscribe();
-    };
   }, [userId]);
 
   useEffect(() => {

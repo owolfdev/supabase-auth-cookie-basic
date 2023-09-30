@@ -128,7 +128,6 @@ export function Profile() {
     console.log("values", values);
     await updateProfile(values);
     setIsEditing(false); // Set back to view mode after updating
-    refetch();
   };
 
   return (
