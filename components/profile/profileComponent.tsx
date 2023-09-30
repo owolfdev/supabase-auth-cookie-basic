@@ -21,13 +21,10 @@ export function Profile() {
   // Using the custom hooks to get the user and profile data
   const user = useUser();
   const { profile, loading, blobUrl, refetch } = useProfile(user?.id);
-
   const [error, setError] = useState<string | null>(null);
   // A state to toggle between edit/view mode
   const [isEditing, setIsEditing] = useState(false);
-
   const supabase = createClientComponentClient();
-
   const [avatarFileForUpdate, setAvatarFileForUpdate] = useState<File | null>(
     null
   );
@@ -57,14 +54,18 @@ export function Profile() {
 
       console.log("uploading file");
 
+      const now = new Date();
+      const time = Math.floor(now.getTime() / 1000);
+      const avatarUrl = `${user?.id}.${time}.avatar`;
+      console.log("avatarUrl", avatarUrl);
+
       const { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(`${user?.id}.avatar`, file);
+        .upload(avatarUrl, file);
 
       if (uploadError) throw uploadError;
 
       // Construct the avatar URL
-      const avatarUrl = `${user?.id}.avatar`;
 
       // Update the profile with the new avatar URL
       await updateProfile({ ...profile, avatarUrl });

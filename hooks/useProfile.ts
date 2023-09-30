@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { get } from "http";
 
 export const useProfile = (userId: string | null) => {
   const supabase = createClientComponentClient();
@@ -56,6 +57,37 @@ export const useProfile = (userId: string | null) => {
   useEffect(() => {
     getProfile();
   }, [userId]);
+
+  const subscribeToAvatarUpdates = useCallback(() => {
+    if (!userId) return;
+
+    const channel = supabase
+      .channel("schema-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "profiles",
+        },
+        (payload) => {
+          console.log("Change received!", payload);
+          getProfile();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [userId]);
+
+  useEffect(() => {
+    console.log("Subscribing to avatar updates...");
+    getProfile();
+    const unsubscribe = subscribeToAvatarUpdates();
+    return unsubscribe;
+  }, [userId, subscribeToAvatarUpdates]);
 
   return { profile, loading, blobUrl, refetch: getProfile };
 };
