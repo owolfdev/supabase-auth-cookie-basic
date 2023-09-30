@@ -8,14 +8,11 @@ import Image from "next/image";
 import { ProfileDisplay } from "./profileDisplay";
 import { ProfileForm } from "./profileEditForm";
 import { Button } from "../ui/button";
-import { on } from "events";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ProfileData } from "@/types/profile";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import AvatarEditor from "../avatar/avatarEditor";
-import { set } from "react-hook-form";
 import { DisplayAvatar } from "../avatar/displayAvatar";
 
 export function Profile() {
@@ -109,6 +106,8 @@ export function Profile() {
     full_name,
     avatarUrl,
     company,
+    info,
+    role,
   }: ProfileData): Promise<void> {
     try {
       // setLoading(true);
@@ -121,6 +120,8 @@ export function Profile() {
         avatar_url: avatarUrl,
         updated_at: new Date().toISOString(),
         company: company,
+        info: info,
+        role: role,
       });
 
       if (error) throw error;
@@ -160,6 +161,8 @@ export function Profile() {
                 full_name: profile.full_name,
                 website: profile.website,
                 company: profile.company,
+                role: profile.role,
+                info: profile.info,
               }}
             />
           ) : (

@@ -33,8 +33,16 @@ export const ProfileDisplay = ({
         <div className="text-lg sm:text-base pl-2">{profile?.full_name}</div>
       </div>
       <div className="flex flex-col gap-3">
+        <div className="text-sm">Bio</div>
+        <div className="text-lg sm:text-base pl-2">{profile?.info}</div>
+      </div>
+      <div className="flex flex-col gap-3">
         <div className="text-sm">Company</div>
         <div className="text-lg sm:text-base pl-2">{profile?.company}</div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <div className="text-sm">Role</div>
+        <div className="text-lg sm:text-base pl-2">{profile?.role}</div>
       </div>
       <div className="flex flex-col gap-3">
         <div className="text-sm">Website</div>

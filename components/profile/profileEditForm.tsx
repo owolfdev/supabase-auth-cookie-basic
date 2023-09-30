@@ -16,10 +16,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 const formSchema = z.object({
-  username: z.string().optional(),
-  full_name: z.string().optional(),
-  website: z.string().optional(),
-  company: z.string().optional(),
+  username: z.string().nullable().optional(),
+  full_name: z.string().nullable().optional(),
+  website: z.string().nullable().optional(),
+  company: z.string().nullable().optional(),
+  role: z.string().nullable().optional(),
+  info: z.string().nullable().optional(),
 });
 
 type FormValues = {
@@ -27,6 +29,8 @@ type FormValues = {
   full_name: string | null;
   website: string | null;
   company: string | null;
+  role: string | null;
+  info: string | null;
 };
 
 interface ProfileFormProps {
@@ -106,6 +110,24 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         />
         <FormField
           control={form.control}
+          name="info"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bio</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter biographical information."
+                  {...field}
+                  value={field.value || ""}
+                  className="text-lg sm:text-base"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="company"
           render={({ field }) => (
             <FormItem>
@@ -113,6 +135,24 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               <FormControl>
                 <Input
                   placeholder="Enter company name."
+                  {...field}
+                  value={field.value || ""}
+                  className="text-lg sm:text-base"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Role</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your role."
                   {...field}
                   value={field.value || ""}
                   className="text-lg sm:text-base"
