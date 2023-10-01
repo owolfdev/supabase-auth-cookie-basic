@@ -40,14 +40,9 @@ export function LogIn() {
 
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-    const response = await fetch("/auth/google", {
+    const response = await fetch("/auth/google/test", {
       method: "POST",
     });
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: "google",
-    // });
-
-    // console.log(data, error);
   };
 
   return (
