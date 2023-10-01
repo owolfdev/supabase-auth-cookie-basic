@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const formData = await request.formData();
   const password = String(formData.get("password"));
+  const requestUrl = new URL(request.url);
 
   const supabase = createRouteHandlerClient({ cookies });
 
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
     password,
   });
 
-  return NextResponse.redirect(`${window.location.origin}`, {
+  return NextResponse.redirect(`${requestUrl.origin}`, {
     status: 301,
   });
 }
