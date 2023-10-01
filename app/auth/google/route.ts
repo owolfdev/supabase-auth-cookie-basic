@@ -6,13 +6,14 @@ export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
   const supabase = createRouteHandlerClient({ cookies });
 
+  console.log(requestUrl.origin);
+  console.log("google/route.ts");
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
   });
 
   console.log(error);
-  console.log(requestUrl.origin);
-  console.log("google/route.ts");
 
   if (error) {
     return NextResponse.redirect(
