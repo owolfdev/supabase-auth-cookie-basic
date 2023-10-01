@@ -29,10 +29,10 @@ export function LogIn() {
 
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
+    console.log("google login data:", data, "and error:", error);
   };
 
   return (
