@@ -31,6 +31,9 @@ export function LogIn() {
     setIsLoggingIn(true);
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        scopes: "https://www.googleapis.com/auth/userinfo.email",
+      },
     });
     console.log("google login data:", data, "and error:", error);
   };
