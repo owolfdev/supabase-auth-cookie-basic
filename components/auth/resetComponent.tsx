@@ -14,14 +14,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import { useSearchParams } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 
 import { MoveLeft } from "lucide-react";
 import { Loader2 } from "lucide-react";
 
 export function ResetPassword() {
-  const supabase = createClientComponentClient();
+  // const supabase = createClientComponentClient();
   const params = useSearchParams();
   const code = params.get("code") || "";
 
@@ -42,7 +42,6 @@ export function ResetPassword() {
       )}
       <CardHeader>
         <CardTitle>Reset Your Password</CardTitle>
-        {/* <div>code: {code}</div> */}
         <CardDescription>Add a new password.</CardDescription>
       </CardHeader>
       <CardContent>

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     password,
   });
 
-  return NextResponse.redirect(`http://localhost:3000/`, {
+  return NextResponse.redirect(`${window.location.origin}`, {
     status: 301,
   });
 }
