@@ -87,7 +87,7 @@ export function SignUp() {
                 size: "default",
               })}
             >
-              Login
+              Log In
             </Link>
           </div>
           <Messages />

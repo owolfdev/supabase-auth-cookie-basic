@@ -16,11 +16,22 @@ import Messages from "./messages";
 import Link from "next/link";
 
 import { Loader2 } from "lucide-react";
+import { BsGoogle } from "react-icons/bs";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function LogIn() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoggingIn(true);
+  };
+  const supabase = createClientComponentClient();
+
+  const handleLogInWithGoogle = () => {
+    setIsLoggingIn(true);
+    supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
   };
 
   return (
@@ -38,54 +49,65 @@ export function LogIn() {
         <CardDescription>Use your email and password.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} action="/auth/sign-in" method="post">
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                placeholder="Your email"
-                type="email"
-                required
-              />
+        <div className="flex flex-col gap-8">
+          <form onSubmit={handleSubmit} action="/auth/sign-in" method="post">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  placeholder="Your email"
+                  type="email"
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder="Your password"
+                  type="password"
+                  required
+                />
+              </div>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                placeholder="Your password"
-                type="password"
-                required
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-row justify-between gap-4 pt-8 items-center">
-              <Button type="submit">Log In</Button>
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-row justify-between gap-4 pt-8 items-center">
+                <Button type="submit">Log In</Button>
 
-              <div className="text-sm text-muted-foreground hidden sm:block">
-                Dont have an account?
+                <div className="text-sm text-muted-foreground hidden sm:block">
+                  Dont have an account?
+                </div>
+                <Link
+                  href="/signup"
+                  className={buttonVariants({
+                    variant: "outline",
+                  })}
+                >
+                  Sign Up
+                </Link>
               </div>
               <Link
-                href="/signup"
-                className={buttonVariants({
-                  variant: "outline",
-                })}
+                href="/password/send-reset-email"
+                className="text-sm text-muted-foreground hover:cursor-pointer"
               >
-                Sign Up
+                Forgot your password?
               </Link>
             </div>
-            <Link
-              href="/password/send-reset-email"
-              className="text-sm text-muted-foreground hover:cursor-pointer"
-            >
-              Forgot your password?
-            </Link>
+            <Messages />
+          </form>
+          <div>
+            {/* google */}
+            <Button onClick={handleLogInWithGoogle}>
+              <span className="flex gap-2 items-center">
+                <span>Sign In with Google</span>
+                <BsGoogle />
+              </span>
+            </Button>
           </div>
-          <Messages />
-        </form>
+        </div>
       </CardContent>
     </Card>
   );
