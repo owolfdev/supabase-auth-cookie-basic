@@ -29,15 +29,7 @@ export default async function Home() {
         <p className="max-w-[700px] text-base text-muted-foreground">
           In a Next.js 13 application with Supabase integration, utilizing
           cookie-based authentication is a secure and streamlined method for
-          managing user sessions. Unlike token-based mechanisms, where tokens
-          need to be explicitly managed on the client-side through storage
-          solutions like localStorage or sessionStorage, cookie-based
-          authentication abstracts away much of this manual management. Once a
-          cookie is set by the server on the clients browser, the browser
-          automatically sends the cookie along with each subsequent request to
-          the server. This way, the server can maintain user state between
-          requests without requiring additional client-side code to handle
-          authentication data.
+          managing user sessions.
         </p>
       </section>
     </main>
