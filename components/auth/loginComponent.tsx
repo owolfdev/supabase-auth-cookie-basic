@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -27,15 +27,26 @@ export function LogIn() {
   };
   const supabase = createClientComponentClient();
 
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log(event, session);
+      }
+    );
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
+    // const response = await fetch("/auth/google", {
+    //   method: "POST",
+    // });
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        scopes: "https://www.googleapis.com/auth/userinfo.email",
-      },
     });
-    console.log("google login data:", data, "and error:", error);
+    console.log(data, error);
   };
 
   return (
