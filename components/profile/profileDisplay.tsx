@@ -16,7 +16,7 @@ export const ProfileDisplay = ({
     <div className="flex flex-col gap-6 mb-8">
       <div className="flex flex-col gap-3">
         <div className="text-sm">Email</div>
-        <div className="text-lg sm:text-base pl-2">{user.email}</div>
+        <div className="text-lg sm:text-base pl-2">{user?.email}</div>
         <div className="text-sm text-muted-foreground">
           Your account is linked to this email.
         </div>

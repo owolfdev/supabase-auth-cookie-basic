@@ -89,16 +89,16 @@ export function Profile() {
     }
   };
 
-  if (!user || loading) {
-    return (
-      <div className="absolute w-full h-[300px]  sm:h-[400px] z-20">
-        <div className="fixed h-full w-full bg-black opacity-50 z-0 top-0 right-0"></div>
-        <div className="flex justify-center align-middle items-center h-full w-full">
-          {/* <Loader2 className="w-20 h-20 animate-spin z-10" /> */}
-        </div>
-      </div>
-    );
-  }
+  // if (!user || loading) {
+  //   return (
+  //     <div className="absolute w-full h-[300px]  sm:h-[400px] z-20">
+  //       <div className="fixed h-full w-full bg-black opacity-50 z-0 top-0 right-0"></div>
+  //       <div className="flex justify-center align-middle items-center h-full w-full">
+  //         <Loader2 className="w-20 h-20 animate-spin z-10" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   async function updateProfile({
     username,
