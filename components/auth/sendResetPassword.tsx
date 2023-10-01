@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,20 +15,10 @@ import Messages from "./messages";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { SendHorizontal, MoveLeft } from "lucide-react";
-
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-
 import { Loader2 } from "lucide-react";
-
 import Link from "next/link";
-// import { set } from "react-hook-form";
-
-type AuthResult = {
-  success: boolean;
-  error?: string;
-};
 
 export function SendResetPasswordEmail() {
   const supabase = createClientComponentClient();
