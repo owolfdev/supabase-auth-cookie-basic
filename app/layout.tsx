@@ -1,22 +1,26 @@
+"use client";
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/themeProvider";
 import { SiteHeader } from "@/components/nav/siteHeader";
 import { headers } from "next/headers";
+import { usePathname } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Supabase Auth",
-  description:
-    "Supabase Auth Template with Next.js 13. Cookie-based authentication offers a secure and streamlined method for managing user sessions",
-};
+// export const metadata: Metadata = {
+//   title: "Supabase Auth",
+//   description:
+//     "Supabase Auth Template with Next.js 13. Cookie-based authentication offers a secure and streamlined method for managing user sessions",
+// };
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = headers();
-  const pathname = headersList.get("x-invoke-path") || "";
+  // const headersList = headers();
+  // const pathname = headersList.get("x-invoke-path") || "";
+  const pathname = usePathname();
   return (
     <html lang="en">
       <body className="">
