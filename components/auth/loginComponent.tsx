@@ -1,6 +1,6 @@
-// "use client";
+"use client";
 
-// import { useState } from "react";
+import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -18,38 +18,40 @@ import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { BsGoogle } from "react-icons/bs";
 
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { signInWithGoogle } from "@/lib/google";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function LogIn() {
-  // const [isLoggingIn, setIsLoggingIn] = useState(false);
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   setIsLoggingIn(true);
-  // };
-  // const supabase = createClientComponentClient();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoggingIn(true);
+  };
+  const supabase = createClientComponentClient();
 
   const handleLogInWithGoogle = async () => {
-    // setIsLoggingIn(true);
-    signInWithGoogle();
+    setIsLoggingIn(true);
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
   };
 
   return (
     <Card>
-      {/* {isLoggingIn && (
+      {isLoggingIn && (
         <div className="absolute w-[320px] h-[300px] sm:w-[450px] sm:h-[400px] z-20">
           <div className="fixed h-full w-full bg-black opacity-50 z-0 top-0 right-0"></div>
           <div className="flex justify-center align-middle items-center h-full w-full">
             <Loader2 className="w-20 h-20 animate-spin z-10" />
           </div>
         </div>
-      )} */}
+      )}
       <CardHeader>
         <CardTitle>Please Log In</CardTitle>
         <CardDescription>Use your email and password.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-8">
-          <form action="/auth/sign-in" method="post">
+          <form onSubmit={handleSubmit} action="/auth/sign-in" method="post">
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
