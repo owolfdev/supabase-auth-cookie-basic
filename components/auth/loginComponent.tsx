@@ -40,7 +40,7 @@ export function LogIn() {
 
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-    const response = await fetch("/auth/google/test", {
+    const response = await fetch("/auth/google", {
       method: "POST",
     });
   };
