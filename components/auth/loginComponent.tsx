@@ -30,7 +30,7 @@ export function LogIn() {
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(event, session);
+        console.log("event", event, "session", session);
       }
     );
     return () => {
@@ -40,13 +40,14 @@ export function LogIn() {
 
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-    // const response = await fetch("/auth/google", {
-    //   method: "POST",
-    // });
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
+    const response = await fetch("/auth/google", {
+      method: "POST",
     });
-    console.log(data, error);
+    // const { data, error } = await supabase.auth.signInWithOAuth({
+    //   provider: "google",
+    // });
+
+    // console.log(data, error);
   };
 
   return (
