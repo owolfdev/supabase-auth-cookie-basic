@@ -19,6 +19,7 @@ import { Loader2 } from "lucide-react";
 import { BsGoogle } from "react-icons/bs";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { signInWithGoogle } from "@/lib/google";
 
 export function LogIn() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -29,15 +30,7 @@ export function LogIn() {
 
   const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
-        },
-      },
-    });
+    signInWithGoogle();
   };
 
   return (
