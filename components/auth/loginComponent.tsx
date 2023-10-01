@@ -27,10 +27,16 @@ export function LogIn() {
   };
   const supabase = createClientComponentClient();
 
-  const handleLogInWithGoogle = () => {
+  const handleLogInWithGoogle = async () => {
     setIsLoggingIn(true);
-    supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
     });
   };
 
