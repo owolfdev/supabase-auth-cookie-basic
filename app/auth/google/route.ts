@@ -10,6 +10,10 @@ export async function POST(request: Request) {
     provider: "google",
   });
 
+  console.log(error);
+  console.log(requestUrl.origin);
+  console.log("google/route.ts");
+
   if (error) {
     return NextResponse.redirect(
       `${requestUrl.origin}/login?error=Could not authenticate user`,
