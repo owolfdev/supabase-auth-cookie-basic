@@ -7,12 +7,21 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
 
+  // const { data: authListener } = supabase.auth.onAuthStateChange(
+  //   async (event, session) => {
+  //     console.log("event", event, "session", session);
+  //   }
+  // );
+  // return () => {
+  //   authListener?.subscription.unsubscribe();
+  // };
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    console.log("User not retrieved, redirecting to login");
+    // console.log("User not retrieved, redirecting to login");
     redirect("/login");
   }
 

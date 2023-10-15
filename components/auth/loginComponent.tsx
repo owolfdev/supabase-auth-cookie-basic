@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Messages from "./messages";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Loader2 } from "lucide-react";
 import { BsGoogle } from "react-icons/bs";
@@ -26,6 +27,7 @@ export function LogIn() {
     setIsLoggingIn(true);
   };
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -39,10 +41,11 @@ export function LogIn() {
   }, []);
 
   const handleLogInWithGoogle = async () => {
-    setIsLoggingIn(true);
-    const response = await fetch("/auth/google", {
-      method: "POST",
-    });
+    // setIsLoggingIn(true);
+    // const response = await fetch("/auth/google", {
+    //   method: "POST",
+    // });
+    router.push("/login-google");
   };
 
   return (
@@ -111,6 +114,12 @@ export function LogIn() {
           </form>
           <div>
             {/* google */}
+            {/* <Button onClick={handleLogInWithGoogle}>
+              <span className="flex gap-2 items-center">
+                <span>Sign In with Google</span>
+                <BsGoogle />
+              </span>
+            </Button> */}
             <Button onClick={handleLogInWithGoogle}>
               <span className="flex gap-2 items-center">
                 <span>Sign In with Google</span>

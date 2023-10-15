@@ -13,7 +13,7 @@ export default async function Account() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    console.log("User not retrieved, redirecting to login");
+    // console.log("User not retrieved, redirecting to login");
     redirect("/login");
   }
 

@@ -8,7 +8,7 @@ git push origin --delete <branch-name>
 
 todo:
 
-subscription seems to be working from useProfile. check the log: Change received! so these values need to be passed to download avatar I think to get the new avatar.
+working on google auth. check http://localhost:3000/login-google, currently hits a route that logs in via email. this is a cookie based route. need to see if we can get cookies to persist a login.
 
 --
 
