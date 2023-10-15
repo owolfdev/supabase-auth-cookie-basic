@@ -120,12 +120,12 @@ export function LogIn() {
                 <BsGoogle />
               </span>
             </Button> */}
-            <Button onClick={handleLogInWithGoogle}>
+            {/* <Button onClick={handleLogInWithGoogle}>
               <span className="flex gap-2 items-center">
                 <span>Sign In with Google</span>
                 <BsGoogle />
               </span>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </CardContent>
