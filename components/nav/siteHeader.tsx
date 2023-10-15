@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { AuthAvatar } from "@/components/avatar/authAvatar";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { get } from "http";
 
 type User = {
   id: string;

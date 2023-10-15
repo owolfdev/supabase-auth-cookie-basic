@@ -10,7 +10,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 export function AuthAvatar() {
   // Using the custom hooks to get the user and profile data
   const user = useUser();
-  const { profile, loading, blobUrl, refetch } = useProfile(user?.id);
+  const { profile, loading, blobUrl, refetch, createProfile } = useProfile(
+    user?.id
+  );
 
   // Local state for storing the user's initials
   const [initials, setInitials] = useState<string>("");
@@ -21,6 +23,14 @@ export function AuthAvatar() {
   };
 
   const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    loading && console.log("loading:", loading);
+    if (!loading && !profile) {
+      console.log("no profile found, creating one");
+      createProfile(user?.id as string);
+    }
+  }, [loading, profile]);
 
   // useEffect hook to set initials when the user data changes
   useEffect(() => {

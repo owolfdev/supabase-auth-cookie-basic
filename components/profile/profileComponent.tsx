@@ -18,7 +18,9 @@ import { DisplayAvatar } from "../avatar/displayAvatar";
 export function Profile() {
   // Using the custom hooks to get the user and profile data
   const user = useUser();
-  const { profile, loading, blobUrl, refetch } = useProfile(user?.id);
+  const { profile, loading, blobUrl, refetch, createProfile } = useProfile(
+    user?.id
+  );
   const [error, setError] = useState<string | null>(null);
   // A state to toggle between edit/view mode
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -32,6 +34,15 @@ export function Profile() {
   >(null);
 
   const { toast } = useToast();
+
+  // useEffect(() => {
+  //   console.log("profile from profile component", profile);
+  //   console.log("user from profile component", user);
+  //   if (user && !profile) {
+  //     console.log("creating profile");
+  //     createProfile(user?.id as string);
+  //   }
+  // }, [user, profile]);
 
   useEffect(() => {
     if (avatarFileForUpdate) {

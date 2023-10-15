@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { get } from "http";
 
@@ -10,6 +10,7 @@ export const useProfile = (userId: string | null) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
   const downloadAvatarImage = async (path: string) => {
+    console.log("Downloading avatar image: ", path);
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -24,6 +25,46 @@ export const useProfile = (userId: string | null) => {
       setBlobUrl(url);
     } catch (error) {
       console.log("Error downloading image: ", error);
+    }
+  };
+
+  const createProfile = async (userId: string) => {
+    console.log("Creating profile for user: ", userId);
+
+    if (!userId) return;
+
+    try {
+      setLoading(true);
+
+      const initialProfileData = {
+        id: userId,
+        full_name: null,
+        username: null,
+        website: null,
+        avatar_url: null,
+        company: null,
+        info: null,
+        role: null,
+      };
+
+      console.log("Creating profile with data: ", initialProfileData);
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .upsert(initialProfileData);
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        // Profile created successfully, set the profile state
+        setProfile(data[0]);
+      }
+    } catch (error) {
+      console.error(`Error creating user profile: ${JSON.stringify(error)}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,5 +99,5 @@ export const useProfile = (userId: string | null) => {
     getProfile();
   }, [userId]);
 
-  return { profile, loading, blobUrl, refetch: getProfile };
+  return { profile, loading, blobUrl, refetch: getProfile, createProfile };
 };
