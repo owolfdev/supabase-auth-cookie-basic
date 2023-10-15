@@ -29,16 +29,20 @@ export default async function Home() {
     <main className="flex flex-col gap-8 px-8 sm:px-12 pt-6 md:py-10">
       <section className="flex max-w-[980px] flex-col items-start gap-2">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
-          Supabase Auth Template with Next.js 13
+          Authentication App.
+          {/* Supabase Auth Template with Next.js 13 */}
         </h1>
         <p className="max-w-[700px] text-lg text-foreground">
-          A ready-to-use authentication template leveraging Supabase and Next.js
-          13, styled with the Shadcn/ui component collection.
+          Login / Signup successful! Welcome to Auth, {user?.email}!
+          {/* A ready-to-use authentication template leveraging Supabase and Next.js
+          13, styled with the Shadcn/ui component collection. */}
         </p>
         <p className="max-w-[700px] text-base text-muted-foreground">
-          In a Next.js 13 application with Supabase integration, utilizing
+          {/* In a Next.js 13 application with Supabase integration, utilizing
           cookie-based authentication is a secure and streamlined method for
-          managing user sessions.
+          managing user sessions. */}
+          Feel free to update your profile page by clicking the link in the
+          navigation bar.
         </p>
       </section>
     </main>
